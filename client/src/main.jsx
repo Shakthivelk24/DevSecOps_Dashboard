@@ -3,13 +3,16 @@ import "./index.css";
 import App from "./App.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./context/UserContext.jsx";
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <App />
-    </ClerkProvider>
-  </BrowserRouter>,
+  <ClerkProvider publishableKey={clerkPubKey}>
+    <BrowserRouter>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </BrowserRouter>
+  </ClerkProvider>,
 );
