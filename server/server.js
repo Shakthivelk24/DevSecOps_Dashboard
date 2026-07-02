@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import UserRouter from './routes/user.routes.js';
 import { clerkMiddleware } from '@clerk/express';
+import pipelineRoutes from './routes/pipelineRoutes.js';
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/v1/users', UserRouter);
+app.use('/api/v1/pipelines', pipelineRoutes);
 
 
 const PORT = process.env.PORT || 5000;
