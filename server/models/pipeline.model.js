@@ -46,7 +46,7 @@ const pipelineSchema = new mongoose.Schema(
     },
     stages: [stageSchema],
     triggeredBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
       required: true,
     },
