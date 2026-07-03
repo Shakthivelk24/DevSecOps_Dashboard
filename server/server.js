@@ -7,6 +7,11 @@ import morgan from 'morgan';
 import UserRouter from './routes/user.routes.js';
 import { clerkMiddleware } from '@clerk/express';
 import pipelineRoutes from './routes/pipelineRoutes.js';
+import deploymentRoutes from './routes/deploymentRoutes.js';
+import metricsRoutes from './routes/metricsRoutes.js';
+
+// Middleware imports
+import { notFound, errorHandler } from './middlewares/errorMiddleware.js';
 
 dotenv.config();
 
@@ -51,7 +56,13 @@ app.get('/health', (req, res) => {
 
 app.use('/api/v1/users', UserRouter);
 app.use('/api/v1/pipelines', pipelineRoutes);
+app.use('/api/v1/deployments', deploymentRoutes);
+app.use('/api/v1/metrics', metricsRoutes);
 
+// ─── Error Handling Middleware ────────────────────────────────
+// These must be LAST — after all routes
+app.use(notFound);      // 404 handler for unmatched routes
+app.use(errorHandler);  // Global error handler
 
 const PORT = process.env.PORT || 5000;
 app.get('/', (req, res) => {
@@ -69,3 +80,27 @@ const server = app.listen(PORT, () => {
   ╚═══════════════════════════════════════════╝
   `);
 });
+
+// ─── Graceful Shutdown ────────────────────────────────────────
+// Handles SIGTERM (sent by Docker/Kubernetes on shutdown)
+// and SIGINT (Ctrl+C) to close connections cleanly
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully...');
+  server.close(() => {
+    console.log('HTTP server closed.');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('\nSIGINT received. Shutting down...');
+  server.close(() => process.exit(0));
+});
+
+// Handle unhandled promise rejections (e.g., DB connection failure)
+process.on('unhandledRejection', (err) => {
+  console.error('UNHANDLED REJECTION:', err.message);
+  server.close(() => process.exit(1));
+});
+
+export default app;
