@@ -34,7 +34,6 @@ const metricSchema = new mongoose.Schema(
     recordedAt: {
       type: Date,
       default: Date.now,
-      index: true,
     },
   },
   {
