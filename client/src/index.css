@@ -1,6 +1,6 @@
 /* client/src/index.css */
-/* Google Fonts — Inter for UI, JetBrains Mono for code */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+/* Google Fonts — expressive UI and mono pairing for a security dashboard */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 
@@ -11,13 +11,22 @@
 }
 
 html {
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  @apply bg-gray-950 text-gray-100 min-h-screen;
+  @apply min-h-screen text-slate-100;
+  background:
+    radial-gradient(circle at top left, rgba(16, 185, 129, 0.16), transparent 32%),
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.12), transparent 28%),
+    linear-gradient(180deg, #020617 0%, #081120 50%, #020617 100%);
+}
+
+::selection {
+  background: rgba(45, 212, 191, 0.28);
+  color: #f8fafc;
 }
 
 /* ─── Scrollbar Styling ───────────────────────────────────── */
@@ -25,13 +34,13 @@ body {
   width: 6px;
   height: 6px;
 }
-::-webkit-scrollbar-track { @apply bg-gray-900; }
-::-webkit-scrollbar-thumb { @apply bg-gray-700 rounded-full; }
-::-webkit-scrollbar-thumb:hover { @apply bg-gray-500; }
+::-webkit-scrollbar-track { @apply bg-slate-950; }
+::-webkit-scrollbar-thumb { @apply bg-slate-700 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-slate-500; }
 
 /* ─── Custom Component Classes ────────────────────────────── */
 .card {
-  @apply bg-gray-900 border border-gray-800 rounded-xl p-5;
+  @apply rounded-2xl border border-white/10 bg-slate-900/70 p-5 shadow-[0_20px_70px_rgba(2,6,23,0.35)] backdrop-blur-xl;
 }
 
 .btn-primary {
@@ -42,7 +51,7 @@ body {
 }
 
 .btn-secondary {
-  @apply bg-gray-700 hover:bg-gray-600 text-gray-100 font-medium px-4 py-2
+  @apply bg-slate-800/90 hover:bg-slate-700 text-slate-100 font-medium px-4 py-2
          rounded-lg transition-colors duration-200;
 }
 
@@ -52,12 +61,36 @@ body {
 }
 
 .input-field {
-  @apply w-full bg-gray-800 border border-gray-700 text-gray-100
-         placeholder-gray-500 rounded-lg px-4 py-2.5 text-sm
+  @apply w-full bg-slate-900/80 border border-white/10 text-slate-100
+         placeholder-slate-500 rounded-lg px-4 py-2.5 text-sm
          focus:outline-none focus:border-blue-500 focus:ring-1
-         focus:ring-blue-500 transition-colors duration-200;
+         focus:ring-teal-500 transition-colors duration-200;
 }
 
 .label {
-  @apply block text-sm font-medium text-gray-300 mb-1.5;
+  @apply block text-sm font-medium text-slate-300 mb-1.5;
+}
+
+.hero-panel {
+  @apply rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-slate-950/70 p-6 shadow-[0_24px_90px_rgba(15,23,42,0.45)] backdrop-blur-xl;
+}
+
+.panel {
+  @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl;
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.45s ease-out both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
