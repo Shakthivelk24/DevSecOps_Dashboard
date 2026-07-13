@@ -3,6 +3,7 @@
 // automatic token refresh / error handling.
 
 import axios from 'axios';
+import { fetchClerkToken } from './clerkToken';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api/v1",
@@ -15,11 +16,13 @@ const api = axios.create({
 // ─── Request Interceptor ──────────────────────────────────────
 // Runs before every request — can add auth headers here if needed
 api.interceptors.request.use(
-  (config) => {
-    // In cookie-based auth, no Authorization header needed
-    // But if you switch to localStorage tokens, add it here:
-    // const token = localStorage.getItem('token');
-    // if (token) config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    const clerkToken = await fetchClerkToken();
+
+    if (clerkToken) {
+      config.headers.Authorization = `Bearer ${clerkToken}`;
+    }
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -33,10 +36,10 @@ api.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
-      // Token expired or invalid — redirect to login
-      // Don't redirect if already on login page
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+      // Token expired or invalid — redirect to sign-in
+      // Don't redirect if already on the sign-in page
+      if (!window.location.pathname.includes('/sign-in')) {
+        window.location.href = '/sign-in';
       }
     }
 
