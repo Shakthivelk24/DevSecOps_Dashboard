@@ -23,9 +23,16 @@ export default defineConfig({
     rollupOptions: {
       output: {
         // Code splitting: vendor chunk for React libs
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          charts: ['recharts'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('recharts')) {
+              return 'charts';
+            }
+
+            return 'vendor';
+          }
+
+          return undefined;
         },
       },
     },
