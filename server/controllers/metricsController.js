@@ -62,10 +62,7 @@ export const getMetricsHistory = asyncHandler(async (req, res) => {
     .sort({ recordedAt: 1 })
     .limit(100);
 
-  // If no real data, generate mock data for demonstration
-  const data = history.length > 0 ? history : generateMockHistory(24);
-
-  ApiResponse.success(res, 'Metrics history fetched', { history: data });
+  ApiResponse.success(res, 'Metrics history fetched', { history });
 });
 
 // ─── GET /api/v1/metrics/summary ──────────────────────────────
@@ -92,11 +89,3 @@ export const getMetricsSummary = asyncHandler(async (req, res) => {
   });
 });
 
-// Helper: Generate mock time-series data for demo purposes
-const generateMockHistory = (hours) => {
-  return Array.from({ length: hours }, (_, i) => ({
-    recordedAt: new Date(Date.now() - (hours - i) * 60 * 60 * 1000),
-    'cpu.usage': Math.floor(20 + Math.random() * 60),
-    'memory.usagePercent': Math.floor(40 + Math.random() * 40),
-  }));
-};
