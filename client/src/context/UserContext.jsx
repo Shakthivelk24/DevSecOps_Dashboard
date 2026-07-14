@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-react";
 
 import api from "../api/axios";
+import { setClerkTokenGetter } from "../api/clerkToken";
 
 const UserContext = createContext();
 
@@ -37,6 +38,13 @@ export const UserProvider = ({ children }) => {
       console.log("User sync error");
     }
   };
+
+  useEffect(() => {
+    setClerkTokenGetter(getToken);
+
+    return () => setClerkTokenGetter(null);
+  }, [getToken]);
+
   useEffect(() => {
         if (isSignedIn && user && !dbUser) {
             syncUser();
