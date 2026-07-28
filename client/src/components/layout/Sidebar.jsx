@@ -13,13 +13,14 @@ import {
 } from "react-icons/md";
 import { FaGithub } from "react-icons/fa";
 import { SiJenkins } from "react-icons/si";
+import { SiGrafana } from "react-icons/si";
 
 const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: MdDashboard },
   { path: "/security", label: "Security", icon: MdShield },
-  { path: "/github", label: "GitHub", icon: FaGithub },
   { path: "/jenkins", label: "Jenkins", icon: SiJenkins },
-  { path: "/grafana ", label: "Grafana", icon: MdShowChart },
+  { path: "/grafana ", label: "Grafana", icon: SiGrafana },
+  { path: "/metrics", label: "Metrics", icon: MdShowChart },
   { path: "/profile", label: "Profile", icon: MdPerson },
 ];
 
