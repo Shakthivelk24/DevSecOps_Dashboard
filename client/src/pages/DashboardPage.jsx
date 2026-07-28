@@ -84,18 +84,6 @@ const DashboardPage = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [jobName, setJobName] = useState(localStorage.getItem("jobName") || "");
-
-  const saveJobName = () => {
-    if (!jobName.trim()) {
-      alert("Please enter a Jenkins job name.");
-      return;
-    }
-
-    localStorage.setItem("jobName", jobName.trim());
-
-    alert(`Project "${jobName}" selected successfully.`);
-  };
   const fetchData = async () => {
     setLoading(true);
     setError(null);
@@ -131,17 +119,6 @@ const DashboardPage = () => {
     );
   }
 
-  const pipelineChartData = dashboard?.charts?.pipelineStatusSeries || [];
-  const deploymentChartData = dashboard?.charts?.deploymentStatusSeries || [];
-  const cpuHistory = history.map((entry) => ({
-    time: formatDateLabel(entry.recordedAt),
-    value: entry.cpu?.usage || entry["cpu.usage"] || 0,
-  }));
-  const memoryHistory = history.map((entry) => ({
-    time: formatDateLabel(entry.recordedAt),
-    value: entry.memory?.usagePercent || entry["memory.usagePercent"] || 0,
-  }));
-
   return (
     <div className="space-y-6">
       <div className="hero-panel overflow-hidden">
@@ -163,13 +140,13 @@ const DashboardPage = () => {
 
             <div className="flex flex-wrap gap-3">
               <Link
-                to="/pipelines"
+                to="/jenkins"
                 className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-400"
               >
                 View pipelines <MdArrowForward size={16} />
               </Link>
               <Link
-                to="/metrics"
+                to="/grafana"
                 className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-slate-100 transition-colors hover:bg-white/10"
               >
                 Review metrics
@@ -190,131 +167,96 @@ const DashboardPage = () => {
         </div>
       </div>
       <div className="mb-6">
-  <div className="card">
-  <h3 className="text-lg font-semibold text-white mb-2">
-    Select Jenkins Project
-  </h3>
+        {/* Quick Access */}
+        <div className="mt-8">
+          <h3 className="text-xl font-semibold text-white mb-6">
+            DevSecOps Services
+          </h3>
 
-  <p className="text-sm text-slate-400 mb-6">
-    Enter the Jenkins Pipeline / Job name.
-  </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {/* Jenkins */}
+            <Link
+              to="/jenkins"
+              className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-blue-500 hover:scale-[1.02] transition"
+            >
+              <div className="flex justify-between items-center">
+                <MdAccountTree className="text-blue-400 text-5xl" />
+                <MdArrowForward className="text-slate-400" />
+              </div>
 
-  <div className="flex flex-col md:flex-row gap-4">
+              <h2 className="text-xl font-semibold text-white mt-5">Jenkins</h2>
 
-    <input
-      type="text"
-      value={jobName}
-      onChange={(e) => setJobName(e.target.value)}
-      placeholder="Example: Virtual-Assistant"
-      className="flex-1 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-white focus:border-emerald-500 focus:outline-none"
-    />
-
-    <button
-      onClick={saveJobName}
-      className="rounded-lg bg-emerald-500 px-6 py-3 font-medium text-white hover:bg-emerald-600"
-    >
-      Save
-    </button>
-
-  </div>
-
-  {jobName && (
-    <div className="mt-5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-4">
-      <p className="text-sm text-slate-400">
-        Selected Project
-      </p>
-
-      <h4 className="text-lg font-semibold text-emerald-400">
-        {jobName}
-      </h4>
-    </div>
-  )}
-</div>
-</div>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        
-        <div className="card lg:col-span-2">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">Recent Alerts</h3>
-            <span className="text-xs text-slate-400">
-              derived from live data
-            </span>
-          </div>
-          <div className="space-y-3">
-            {(dashboard?.recentActivity?.latestAlerts || []).length === 0 ? (
-              <p className="py-6 text-center text-sm text-slate-500">
-                No active alerts
+              <p className="text-slate-400 mt-2 text-sm">
+                Monitor builds, pipeline stages, logs and artifacts.
               </p>
-            ) : (
-              dashboard.recentActivity.latestAlerts.map((alert, index) => (
-                <div
-                  key={`${alert.title}-${index}`}
-                  className="flex items-start justify-between rounded-xl border border-white/5 bg-white/5 px-4 py-3"
-                >
-                  <div>
-                    <p className="text-sm font-medium text-white">
-                      {alert.title}
-                    </p>
-                    <p className="mt-1 text-xs text-slate-400">
-                      {alert.detail}
-                    </p>
-                  </div>
-                  <Badge
-                    status={alert.severity === "high" ? "failed" : "pending"}
-                    label={alert.severity}
-                  />
-                </div>
-              ))
-            )}
-          </div>
-        </div>
+            </Link>
 
-        <div className="card">
-          <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-sm font-semibold text-white">
-              Monitoring Snapshot
+            {/* SonarQube */}
+            <Link
+              to="/sonarqube"
+              className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-yellow-500 hover:scale-[1.02] transition"
+            >
+              <div className="flex justify-between items-center">
+                <MdShield className="text-yellow-400 text-5xl" />
+                <MdArrowForward className="text-slate-400" />
+              </div>
+
+              <h2 className="text-xl font-semibold text-white mt-5">
+                SonarQube
+              </h2>
+
+              <p className="text-slate-400 mt-2 text-sm">
+                Code quality, security vulnerabilities and coverage reports.
+              </p>
+            </Link>
+
+            {/* Grafana */}
+            <Link
+              to="/grafana"
+              className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-orange-500 hover:scale-[1.02] transition"
+            >
+              <div className="flex justify-between items-center">
+                <MdTimeline className="text-orange-400 text-5xl" />
+                <MdArrowForward className="text-slate-400" />
+              </div>
+
+              <h2 className="text-xl font-semibold text-white mt-5">Grafana</h2>
+
+              <p className="text-slate-400 mt-2 text-sm">
+                View live metrics, dashboards and infrastructure monitoring.
+              </p>
+            </Link>
+          </div>
+          {/* Platform Status */}
+          <div className="mt-8">
+            <h3 className="text-xl font-semibold text-white mb-6">
+              Platform Status
             </h3>
-            <span className="text-xs text-slate-400">latest sample</span>
-          </div>
-          <div className="space-y-4">
-            <div>
-              <div className="mb-2 flex items-center justify-between text-xs text-slate-400">
-                <span>CPU</span>
-                <span>{dashboard?.monitoringSummary?.cpuUsage || 0}%</span>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+              <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Jenkins</span>
+                  <MdCheckCircle className="text-green-500 text-2xl" />
+                </div>
+                <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
               </div>
-              <div className="h-2 rounded-full bg-white/5">
-                <div
-                  className="h-2 rounded-full bg-cyan-400"
-                  style={{
-                    width: `${dashboard?.monitoringSummary?.cpuUsage || 0}%`,
-                  }}
-                />
+
+              <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">SonarQube</span>
+                  <MdCheckCircle className="text-green-500 text-2xl" />
+                </div>
+                <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
               </div>
-            </div>
-            <div>
-              <div className="mb-2 flex items-center justify-between text-xs text-slate-400">
-                <span>Memory</span>
-                <span>{dashboard?.monitoringSummary?.memoryUsage || 0}%</span>
+
+              <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Grafana</span>
+                  <MdCheckCircle className="text-green-500 text-2xl" />
+                </div>
+                <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
               </div>
-              <div className="h-2 rounded-full bg-white/5">
-                <div
-                  className="h-2 rounded-full bg-emerald-400"
-                  style={{
-                    width: `${dashboard?.monitoringSummary?.memoryUsage || 0}%`,
-                  }}
-                />
-              </div>
-            </div>
-            <div className="rounded-2xl border border-white/5 bg-white/5 p-4 text-sm text-slate-300">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
-                Network
-              </p>
-              <p className="mt-2 font-medium text-white">
-                {formatBytes(dashboard?.monitoringSummary?.networkIn || 0)} in
-              </p>
-              <p className="text-slate-400">
-                {formatBytes(dashboard?.monitoringSummary?.networkOut || 0)} out
-              </p>
             </div>
           </div>
         </div>
