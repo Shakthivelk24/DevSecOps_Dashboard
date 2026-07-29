@@ -3,8 +3,6 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import DashboardPage from "../pages/DashboardPage";
 import Layout from '../components/layout/Layout';
-import PipelinesPage from '../pages/PipelinesPage';
-import DeploymentsPage from '../pages/DeploymentsPage';
 import MetricsPage from '../pages/MetricsPage';
 import SecurityPage from '../pages/SecurityPage';
 import JenkinsPage from '../pages/JenkinsPage';
@@ -55,8 +53,6 @@ const AppRoutes = () => {
       >
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="pipelines" element={<PipelinesPage />} />
-        <Route path="deployments" element={<DeploymentsPage />} />
         <Route path="metrics" element={<MetricsPage />} />
         <Route path="security" element={<SecurityPage />} />
         <Route path="jenkins" element={<JenkinsPage />} />
