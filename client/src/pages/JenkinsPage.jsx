@@ -14,49 +14,54 @@ const JenkinsPage = () => {
   const logRef = useRef(null);
 
   const [inputJobName, setInputJobName] = useState(
-  localStorage.getItem("jobName") || ""
-);
-
-const saveJobName = () => {
-  if (!inputJobName.trim()) {
-    alert("Please enter a Jenkins Job Name.");
-    return;
-  }
-
-  localStorage.setItem("jobName", inputJobName.trim());
-  window.location.reload();
-};
-
-if (!jobName) {
-  return (
-    <div className="flex items-center justify-center min-h-[70vh]">
-      <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-bold text-white mb-3">
-          Jenkins Configuration
-        </h2>
-
-        <p className="text-slate-400 mb-6">
-          Enter the Jenkins Pipeline / Job Name to monitor.
-        </p>
-
-        <input
-          type="text"
-          value={inputJobName}
-          onChange={(e) => setInputJobName(e.target.value)}
-          placeholder="Example: Virtual-Assistant"
-          className="w-full rounded-lg bg-[#0B1120] border border-slate-700 p-3 text-white focus:outline-none focus:border-blue-500"
-        />
-
-        <button
-          onClick={saveJobName}
-          className="w-full mt-5 bg-blue-600 hover:bg-blue-700 rounded-lg py-3 font-semibold transition"
-        >
-          Save Job Name
-        </button>
-      </div>
-    </div>
+    localStorage.getItem("jobName") || "",
   );
-}
+
+  const saveJobName = () => {
+    if (!inputJobName.trim()) {
+      alert("Please enter a Jenkins Job Name.");
+      return;
+    }
+
+    localStorage.setItem("jobName", inputJobName.trim());
+    window.location.reload();
+  };
+  const changeJobName = () => {
+    localStorage.removeItem("jobName");
+
+    setInputJobName("");
+    window.location.reload();
+  };
+  if (!jobName) {
+    return (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-8 w-full max-w-lg">
+          <h2 className="text-2xl font-bold text-white mb-3">
+            Jenkins Configuration
+          </h2>
+
+          <p className="text-slate-400 mb-6">
+            Enter the Jenkins Pipeline / Job Name to monitor.
+          </p>
+
+          <input
+            type="text"
+            value={inputJobName}
+            onChange={(e) => setInputJobName(e.target.value)}
+            placeholder="Example: Virtual-Assistant"
+            className="w-full rounded-lg bg-[#0B1120] border border-slate-700 p-3 text-white focus:outline-none focus:border-blue-500"
+          />
+
+          <button
+            onClick={saveJobName}
+            className="w-full mt-5 bg-blue-600 hover:bg-blue-700 rounded-lg py-3 font-semibold transition"
+          >
+            Save Job Name
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const fetchBuilds = async (isInitialLoad = false) => {
     try {
@@ -151,12 +156,21 @@ if (!jobName) {
           </p>
         </div>
 
-        <button
-          onClick={openJenkins}
-          className="px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
-        >
-          Open Jenkins
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={openJenkins}
+            className="px-5 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+          >
+            Open Jenkins
+          </button>
+
+          <button
+            onClick={changeJobName}
+            className="px-5 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors"
+          >
+            Change Job Name
+          </button>
+        </div>
       </div>
 
       {/* Pipeline Stages */}
@@ -247,7 +261,7 @@ if (!jobName) {
           <tbody>
             {loading ? (
               <div className="flex items-center justify-center h-64">
-               <Spinner size="lg" label="Loading dashboard..." />
+                <Spinner size="lg" label="Loading dashboard..." />
               </div>
             ) : (
               builds.map((build) => (

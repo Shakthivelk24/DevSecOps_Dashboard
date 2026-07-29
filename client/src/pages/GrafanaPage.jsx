@@ -1,22 +1,39 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api/axios";
 import Spinner from "../components/ui/Spinner";
 
 export default function GrafanaPage() {
-  const [uid, setUid] = useState(localStorage.getItem("grafanaUid") || "");
+  // Saved UID used for fetching the dashboard
+  const [uid, setUid] = useState(
+    () => localStorage.getItem("grafanaUid") || ""
+  );
+
+  // Input field value
+  const [inputUid, setInputUid] = useState(
+    () => localStorage.getItem("grafanaUid") || ""
+  );
 
   const [dashboard, setDashboard] = useState(null);
+  const [slug, setSlug] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [slug, setSlug] = useState("");
 
   const saveUid = () => {
-    if (!uid.trim()) {
+    const trimmedUid = inputUid.trim();
+
+    if (!trimmedUid) {
       alert("Please enter the Grafana Dashboard UID.");
       return;
     }
 
-    localStorage.setItem("grafanaUid", uid.trim());
+    localStorage.setItem("grafanaUid", trimmedUid);
+
+    console.log(
+      "Stored UID:",
+      localStorage.getItem("grafanaUid")
+    );
+
+    setUid(trimmedUid);
   };
 
   useEffect(() => {
@@ -27,8 +44,6 @@ export default function GrafanaPage() {
         setLoading(true);
 
         const { data } = await api.get(`/grafana/dashboard/${uid}`);
-
-        console.log(data);
 
         setDashboard(data.dashboard);
         setSlug(data.meta.slug);
@@ -44,6 +59,15 @@ export default function GrafanaPage() {
     fetchDashboard();
   }, [uid]);
 
+  const changeDashboard = () => {
+    localStorage.removeItem("grafanaUid");
+    setUid("");
+    setInputUid("");
+    setDashboard(null);
+    setSlug("");
+    setError("");
+  };
+
   if (!uid) {
     return (
       <div className="flex justify-center items-center h-[70vh]">
@@ -58,15 +82,15 @@ export default function GrafanaPage() {
 
           <input
             type="text"
-            value={uid}
+            value={inputUid}
             placeholder="Example: ce4rjk7yohogwd"
-            onChange={(e) => setUid(e.target.value)}
+            onChange={(e) => setInputUid(e.target.value)}
             className="w-full bg-[#0B1120] border border-slate-700 rounded-lg p-3 text-white"
           />
 
           <button
             onClick={saveUid}
-            className="w-full mt-5 bg-blue-600 hover:bg-blue-700 rounded-lg py-3 font-semibold"
+            className="w-full mt-5 bg-blue-600 hover:bg-blue-700 rounded-lg py-3 font-semibold text-white"
           >
             Save Dashboard UID
           </button>
@@ -85,8 +109,15 @@ export default function GrafanaPage() {
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-[70vh] text-red-500 text-xl">
-        {error}
+      <div className="flex flex-col items-center justify-center h-[70vh] gap-4">
+        <p className="text-red-500 text-xl">{error}</p>
+
+        <button
+          onClick={changeDashboard}
+          className="bg-red-600 hover:bg-red-700 px-5 py-2 rounded-lg text-white"
+        >
+          Change Dashboard UID
+        </button>
       </div>
     );
   }
@@ -96,7 +127,9 @@ export default function GrafanaPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-bold">{dashboard?.title}</h1>
+          <h1 className="text-4xl font-bold">
+            {dashboard?.title || "Grafana Dashboard"}
+          </h1>
 
           <p className="text-slate-400 mt-2">
             Dashboard UID:
@@ -104,27 +137,39 @@ export default function GrafanaPage() {
           </p>
         </div>
 
-        <button
-          onClick={() =>
-            window.open(`http://localhost/grafana/d/${uid}`, "_blank")
-          }
-          className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-lg font-semibold"
-        >
-          Open Grafana
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() =>
+              window.open(
+                `http://localhost/grafana/d/${uid}`,
+                "_blank"
+              )
+            }
+            className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-lg font-semibold"
+          >
+            Open Grafana
+          </button>
+
+          <button
+            onClick={changeDashboard}
+            className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-lg font-semibold"
+          >
+            Change UID
+          </button>
+        </div>
       </div>
 
-      {/* Panels */}
+      {/* Dashboard */}
       <div className="bg-[#121A2B] border border-slate-700 rounded-xl overflow-hidden">
-  <iframe
-    title="Grafana Dashboard"
-    src={`http://localhost/grafana/d/${dashboard?.uid}/${slug}?orgId=1&theme=dark`}
-    width="100%"
-    height="900"
-    frameBorder="0"
-    className="rounded-xl"
-  />
-</div>
+        <iframe
+          title="Grafana Dashboard"
+          src={`http://localhost/grafana/d/${dashboard?.uid}/${slug}?orgId=1&theme=dark`}
+          width="100%"
+          height="900"
+          frameBorder="0"
+          className="rounded-xl"
+        />
+      </div>
     </div>
   );
 }
