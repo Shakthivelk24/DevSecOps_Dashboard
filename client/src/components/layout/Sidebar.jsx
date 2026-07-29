@@ -2,16 +2,12 @@
 import { NavLink } from "react-router-dom";
 import {
   MdDashboard,
-  MdAccountTree,
-  MdRocketLaunch,
   MdShowChart,
   MdPerson,
   MdChevronLeft,
   MdChevronRight,
   MdShield,
-  MdSettings,
 } from "react-icons/md";
-import { FaGithub } from "react-icons/fa";
 import { SiJenkins } from "react-icons/si";
 import { SiGrafana } from "react-icons/si";
 

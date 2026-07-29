@@ -1,5 +1,5 @@
 // client/src/components/layout/Navbar.jsx
-import { MdMenu, MdNotifications, MdPerson } from 'react-icons/md';
+import { MdMenu,  MdPerson } from 'react-icons/md';
 import { useUser, UserButton } from "@clerk/clerk-react";
 
 const Navbar = ({ onMenuClick }) => {
@@ -21,11 +21,6 @@ const Navbar = ({ onMenuClick }) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <button className="relative rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-white/5 hover:text-white">
-          <MdNotifications size={20} />
-          <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-emerald-400" />
-        </button>
-
         <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-1.5">
           <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-200">
             <MdPerson size={16} />
