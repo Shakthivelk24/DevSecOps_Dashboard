@@ -15,7 +15,7 @@ const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: MdDashboard },
   { path: "/security", label: "Security", icon: MdShield },
   { path: "/jenkins", label: "Jenkins", icon: SiJenkins },
-  { path: "/grafana ", label: "Grafana", icon: SiGrafana },
+  { path: "/grafana", label: "Grafana", icon: SiGrafana },
   { path: "/metrics", label: "Metrics", icon: MdShowChart },
   { path: "/profile", label: "Profile", icon: MdPerson },
 ];

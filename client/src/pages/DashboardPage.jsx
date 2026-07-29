@@ -85,7 +85,7 @@ const DashboardPage = () => {
 
             {/* SonarQube */}
             <Link
-              to="/sonarqube"
+              to="/security"
               className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-yellow-500 hover:scale-[1.02] transition"
             >
               <div className="flex justify-between items-center">
