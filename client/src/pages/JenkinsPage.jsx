@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import api from "../api/axios";
 import { CheckCircle2, XCircle, Clock3 } from "lucide-react";
+import Spinner from "../components/ui/Spinner";
 
 const JenkinsPage = () => {
   const [builds, setBuilds] = useState([]);
@@ -245,11 +246,9 @@ if (!jobName) {
 
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan="4" className="text-center py-8">
-                  Loading...
-                </td>
-              </tr>
+              <div className="flex items-center justify-center h-64">
+               <Spinner size="lg" label="Loading dashboard..." />
+              </div>
             ) : (
               builds.map((build) => (
                 <tr key={build.id} className="border-b border-gray-700">

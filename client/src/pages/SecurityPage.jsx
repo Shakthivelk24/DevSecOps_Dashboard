@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios"; // Change this path if needed
+import Spinner from "../components/ui/Spinner";
 
 export default function SecurityPage() {
   const [projectKey, setProjectKey] = useState(
@@ -91,8 +92,8 @@ export default function SecurityPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[70vh] text-white text-xl">
-        Loading SonarQube Dashboard...
+      <div className="flex items-center justify-center h-64">
+        <Spinner size="lg" label="Loading dashboard..." />
       </div>
     );
   }

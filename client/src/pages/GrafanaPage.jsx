@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import api from "../api/axios";
+import Spinner from "../components/ui/Spinner";
 
 export default function GrafanaPage() {
   const [uid, setUid] = useState(localStorage.getItem("grafanaUid") || "");
@@ -31,8 +32,6 @@ export default function GrafanaPage() {
 
         setDashboard(data.dashboard);
         setSlug(data.meta.slug);
-        console.log("Dashboard UID:", data.dashboard.uid);
-console.log("Slug:", data.meta.slug);
         setError("");
       } catch (err) {
         console.error(err);
@@ -78,8 +77,8 @@ console.log("Slug:", data.meta.slug);
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-[70vh] text-white text-xl">
-        Loading Grafana Dashboard...
+      <div className="flex items-center justify-center h-64">
+        <Spinner size="lg" label="Loading dashboard..." />
       </div>
     );
   }
