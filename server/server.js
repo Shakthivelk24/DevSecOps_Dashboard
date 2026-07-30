@@ -7,10 +7,11 @@ import morgan from "morgan";
 import UserRouter from "./routes/user.routes.js";
 import { clerkMiddleware } from "@clerk/express";
 import metricsRoutes from "./routes/metricsRoutes.js";
-
+import dockerRoutes from "./routes/dockerRoutes.js";
 import sonarqubeRoutes from "./routes/sonarqubeRoutes.js";
 import jenkinsRoutes from "./routes/jenkinsRoutes.js";
 import grafanaRoutes from "./routes/grafanaRoutes.js";
+import kubernetesRoutes from "./routes/kubernetesRoutes.js";
 
 // Middleware imports
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
@@ -68,6 +69,8 @@ app.use("/api/v1/grafana", grafanaRoutes);
 app.use("/api/v1/sonarqube", sonarqubeRoutes);
 app.use("/api/v1/jenkins", jenkinsRoutes);
 app.use("/api/v1/metrics", metricsRoutes);
+app.use("/api/v1/docker", dockerRoutes);
+app.use("/api/v1/kubernetes", kubernetesRoutes);
 
 // ─── Error Handling Middleware ────────────────────────────────
 // These must be LAST — after all routes
