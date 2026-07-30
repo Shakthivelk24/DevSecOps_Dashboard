@@ -1,7 +1,7 @@
 // client/src/pages/DashboardPage.jsx
 // Main dashboard with stats overview, recent pipelines, and charts.
 
-import { useContext} from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import {
   MdAccountTree,
@@ -10,10 +10,11 @@ import {
   MdSecurity,
   MdShield,
   MdArrowForward,
+  MdStorage,
 } from "react-icons/md";
+
+import { SiDocker, SiKubernetes } from "react-icons/si";
 import UserContext from "../context/UserContext";
-
-
 
 const DashboardPage = () => {
   const { dbUser } = useContext(UserContext);
@@ -50,6 +51,7 @@ const DashboardPage = () => {
                 Review metrics
               </Link>
             </div>
+
             {/* {error && (
               <p className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
                 {error}
@@ -118,6 +120,38 @@ const DashboardPage = () => {
                 View live metrics, dashboards and infrastructure monitoring.
               </p>
             </Link>
+            <Link
+              to="/docker"
+              className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-sky-500 hover:scale-[1.02] transition"
+            >
+              <div className="flex justify-between items-center">
+                <SiDocker className="text-sky-400 text-5xl" />
+                <MdArrowForward className="text-slate-400" />
+              </div>
+
+              <h2 className="text-xl font-semibold text-white mt-5">Docker</h2>
+
+              <p className="text-slate-400 mt-2 text-sm">
+                Monitor containers, images, runtime status and health.
+              </p>
+            </Link>
+            <Link
+              to="/kubernetes"
+              className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-indigo-500 hover:scale-[1.02] transition"
+            >
+              <div className="flex justify-between items-center">
+                <SiKubernetes className="text-indigo-400 text-5xl" />
+                <MdArrowForward className="text-slate-400" />
+              </div>
+
+              <h2 className="text-xl font-semibold text-white mt-5">
+                Kubernetes
+              </h2>
+
+              <p className="text-slate-400 mt-2 text-sm">
+                View cluster health, pods, deployments and services.
+              </p>
+            </Link>
           </div>
           {/* Platform Status */}
           <div className="mt-8">
@@ -147,6 +181,22 @@ const DashboardPage = () => {
                   <span className="text-slate-400">Grafana</span>
                   <MdCheckCircle className="text-green-500 text-2xl" />
                 </div>
+                <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
+              </div>
+              <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Docker</span>
+                  <MdCheckCircle className="text-green-500 text-2xl" />
+                </div>
+
+                <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
+              </div>
+              <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Kubernetes</span>
+                  <MdCheckCircle className="text-green-500 text-2xl" />
+                </div>
+
                 <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
               </div>
             </div>
