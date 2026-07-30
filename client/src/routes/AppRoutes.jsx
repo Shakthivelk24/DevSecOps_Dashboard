@@ -8,6 +8,8 @@ import SecurityPage from '../pages/SecurityPage';
 import JenkinsPage from '../pages/JenkinsPage';
 import ProfilePage from '../pages/ProfilePage';
 import GrafanaPage from '../pages/GrafanaPage';
+import DockerPage from '../pages/DockerPage';
+import KubernetesPage from '../pages/KubernetesPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 
@@ -57,6 +59,8 @@ const AppRoutes = () => {
         <Route path="security" element={<SecurityPage />} />
         <Route path="jenkins" element={<JenkinsPage />} />
         <Route path="grafana" element={<GrafanaPage />} />
+        <Route path="docker" element={<DockerPage />} />
+        <Route path="kubernetes" element={<KubernetesPage />} />
         <Route path="profile" element={<ProfilePage />} />
       </Route>
       {/* 404 */}
