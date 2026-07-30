@@ -14,10 +14,12 @@
   "type": "module",
   "dependencies": {
     "@clerk/express": "^2.1.31",
+    "@kubernetes/client-node": "^1.4.0",
     "axios": "^1.18.1",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "dockerode": "^5.0.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "helmet": "^8.2.0",
