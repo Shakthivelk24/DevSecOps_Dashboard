@@ -8,13 +8,14 @@ import {
   MdChevronRight,
   MdShield,
 } from "react-icons/md";
-import { SiJenkins } from "react-icons/si";
-import { SiGrafana } from "react-icons/si";
+import { SiJenkins, SiGrafana, SiDocker, SiKubernetes } from "react-icons/si";
 
 const navItems = [
   { path: "/dashboard", label: "Dashboard", icon: MdDashboard },
   { path: "/security", label: "Security", icon: MdShield },
   { path: "/jenkins", label: "Jenkins", icon: SiJenkins },
+  { path: "/docker", label: "Docker", icon: SiDocker },
+  { path: "/kubernetes", label: "Kubernetes", icon: SiKubernetes },
   { path: "/grafana", label: "Grafana", icon: SiGrafana },
   { path: "/metrics", label: "Metrics", icon: MdShowChart },
   { path: "/profile", label: "Profile", icon: MdPerson },
