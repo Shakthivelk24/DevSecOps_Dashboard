@@ -2,6 +2,9 @@ import { useEffect, useState, useRef } from "react";
 import api from "../api/axios";
 import { CheckCircle2, XCircle, Clock3 } from "lucide-react";
 import Spinner from "../components/ui/Spinner";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import { FaFilePdf } from "react-icons/fa";
 
 const JenkinsPage = () => {
   const [builds, setBuilds] = useState([]);
@@ -62,7 +65,173 @@ const JenkinsPage = () => {
       </div>
     );
   }
+  const cleanStageName = (name) =>
+    name.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").trim();
+  const exportPDF = () => {
+    const img = new Image();
+    img.src = "/logo.png";
 
+    img.onload = () => {
+      const doc = new jsPDF();
+
+      // Logo
+      doc.addImage(img, "PNG", 14, 10, 22, 22);
+
+      // Header
+      doc.setFontSize(20);
+      doc.text("DevOps Pipeline Dashboard", 42, 18);
+
+      doc.setFontSize(14);
+      doc.text("Jenkins Build Report", 42, 28);
+
+      doc.line(14, 38, 196, 38);
+
+      doc.setFontSize(11);
+
+      doc.text(`Job Name: ${jobName}`, 14, 48);
+      doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 56);
+
+      doc.text(`Latest Build: #${buildDetails.number || "-"}`, 14, 64);
+
+      doc.text(`Status: ${buildDetails.result || "-"}`, 80, 64);
+
+      doc.text(`Agent: ${buildDetails.builtOn || "Master"}`, 140, 64);
+
+      // Build History
+      // Build History
+      autoTable(doc, {
+        startY: 74,
+        head: [["Build", "Status", "Duration", "Started"]],
+        body: builds.map((build) => [
+          `#${build.id}`,
+          build.status,
+          build.duration,
+          new Date(build.timestamp).toLocaleString(),
+        ]),
+        headStyles: {
+          fillColor: [37, 99, 235],
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+        },
+        styles: {
+          fontSize: 10,
+          cellPadding: 3,
+        },
+        alternateRowStyles: {
+          fillColor: [245, 245, 245],
+        },
+        didParseCell: (data) => {
+          if (data.section === "body" && data.column.index === 1) {
+            const status = data.cell.raw;
+
+            switch (status) {
+              case "SUCCESS":
+                data.cell.styles.fillColor = [22, 163, 74]; // Green
+                data.cell.styles.textColor = [255, 255, 255];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              case "FAILURE":
+              case "FAILED":
+                data.cell.styles.fillColor = [220, 38, 38]; // Red
+                data.cell.styles.textColor = [255, 255, 255];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              case "RUNNING":
+              case "IN_PROGRESS":
+                data.cell.styles.fillColor = [234, 179, 8]; // Yellow
+                data.cell.styles.textColor = [0, 0, 0];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              case "UNSTABLE":
+                data.cell.styles.fillColor = [249, 115, 22]; // Orange
+                data.cell.styles.textColor = [255, 255, 255];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              default:
+                data.cell.styles.fillColor = [107, 114, 128]; // Gray
+                data.cell.styles.textColor = [255, 255, 255];
+            }
+          }
+        },
+      });
+
+      // Pipeline Stages
+      // Pipeline Stages
+      autoTable(doc, {
+        startY: doc.lastAutoTable.finalY + 12,
+        head: [["Stage", "Status"]],
+        body: stages.map((stage) => [cleanStageName(stage.name), stage.status]),
+        headStyles: {
+          fillColor: [22, 163, 74],
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+        },
+        styles: {
+          fontSize: 10,
+          cellPadding: 3,
+        },
+        alternateRowStyles: {
+          fillColor: [245, 245, 245],
+        },
+        didParseCell: (data) => {
+          if (data.section === "body" && data.column.index === 1) {
+            const status = data.cell.raw;
+
+            switch (status) {
+              case "SUCCESS":
+                data.cell.styles.fillColor = [22, 163, 74]; // Green
+                data.cell.styles.textColor = [255, 255, 255];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              case "FAILURE":
+              case "FAILED":
+                data.cell.styles.fillColor = [220, 38, 38]; // Red
+                data.cell.styles.textColor = [255, 255, 255];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              case "RUNNING":
+              case "IN_PROGRESS":
+                data.cell.styles.fillColor = [234, 179, 8]; // Yellow
+                data.cell.styles.textColor = [0, 0, 0];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              case "UNSTABLE":
+                data.cell.styles.fillColor = [249, 115, 22]; // Orange
+                data.cell.styles.textColor = [255, 255, 255];
+                data.cell.styles.fontStyle = "bold";
+                break;
+
+              default:
+                data.cell.styles.fillColor = [107, 114, 128]; // Gray
+                data.cell.styles.textColor = [255, 255, 255];
+            }
+          }
+        },
+      });
+
+      // Artifacts
+      autoTable(doc, {
+        startY: doc.lastAutoTable.finalY + 12,
+        head: [["Artifact", "Path"]],
+        body: artifacts.map((artifact) => [
+          artifact.fileName,
+          artifact.relativePath,
+        ]),
+        headStyles: {
+          fillColor: [99, 102, 241],
+        },
+      });
+
+      doc.save(`jenkins-report-${new Date().toISOString().slice(0, 10)}.pdf`);
+    };
+  };
   const fetchBuilds = async (isInitialLoad = false) => {
     try {
       if (isInitialLoad) {
@@ -163,7 +332,13 @@ const JenkinsPage = () => {
           >
             Open Jenkins
           </button>
-
+          <button
+            onClick={exportPDF}
+            className="flex items-center gap-2 px-5 py-3 bg-red-600 hover:bg-red-700 rounded-lg transition"
+          >
+            <FaFilePdf />
+            Export Report
+          </button>
           <button
             onClick={changeJobName}
             className="px-5 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors"
