@@ -10,6 +10,7 @@ import ProfilePage from '../pages/ProfilePage';
 import GrafanaPage from '../pages/GrafanaPage';
 import DockerPage from '../pages/DockerPage';
 import KubernetesPage from '../pages/KubernetesPage';
+import TrivyPage from '../pages/TrivyPage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 
@@ -61,6 +62,7 @@ const AppRoutes = () => {
         <Route path="grafana" element={<GrafanaPage />} />
         <Route path="docker" element={<DockerPage />} />
         <Route path="kubernetes" element={<KubernetesPage />} />
+        <Route path="trivy" element={<TrivyPage />} />
         <Route path="profile" element={<ProfilePage />} />
       </Route>
       {/* 404 */}
