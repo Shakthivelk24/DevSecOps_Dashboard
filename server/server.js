@@ -12,6 +12,8 @@ import sonarqubeRoutes from "./routes/sonarqubeRoutes.js";
 import jenkinsRoutes from "./routes/jenkinsRoutes.js";
 import grafanaRoutes from "./routes/grafanaRoutes.js";
 import kubernetesRoutes from "./routes/kubernetesRoutes.js";
+import trivyRoutes from "./routes/trivyRoutes.js";
+
 
 // Middleware imports
 import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
@@ -71,6 +73,7 @@ app.use("/api/v1/jenkins", jenkinsRoutes);
 app.use("/api/v1/metrics", metricsRoutes);
 app.use("/api/v1/docker", dockerRoutes);
 app.use("/api/v1/kubernetes", kubernetesRoutes);
+app.use("/api/v1/trivy", trivyRoutes);
 
 // ─── Error Handling Middleware ────────────────────────────────
 // These must be LAST — after all routes
