@@ -26,6 +26,9 @@ export default function TrivyPage() {
 
       const { data } = await api.get(
         `/trivy/scan/${encodeURIComponent(image)}`,
+        {
+          timeout: 60000,
+        },
       );
 
       setReport(data.data);
