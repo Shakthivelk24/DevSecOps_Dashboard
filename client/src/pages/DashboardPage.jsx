@@ -10,7 +10,7 @@ import {
   MdSecurity,
   MdShield,
   MdArrowForward,
-  MdStorage,
+  MdBugReport,
 } from "react-icons/md";
 
 import { SiDocker, SiKubernetes } from "react-icons/si";
@@ -152,6 +152,23 @@ const DashboardPage = () => {
                 View cluster health, pods, deployments and services.
               </p>
             </Link>
+            {/* Trivy */}
+            <Link
+              to="/trivy"
+              className="bg-[#121A2B] border border-slate-700 rounded-xl p-6 hover:border-green-500 hover:scale-[1.02] transition"
+            >
+              <div className="flex justify-between items-center">
+                <MdBugReport className="text-green-400 text-5xl" />
+                <MdArrowForward className="text-slate-400" />
+              </div>
+
+              <h2 className="text-xl font-semibold text-white mt-5">Trivy</h2>
+
+              <p className="text-slate-400 mt-2 text-sm">
+                Scan container images, file systems and repositories for
+                vulnerabilities, secrets and misconfigurations.
+              </p>
+            </Link>
           </div>
           {/* Platform Status */}
           <div className="mt-8">
@@ -194,6 +211,14 @@ const DashboardPage = () => {
               <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
                 <div className="flex justify-between">
                   <span className="text-slate-400">Kubernetes</span>
+                  <MdCheckCircle className="text-green-500 text-2xl" />
+                </div>
+
+                <p className="text-3xl font-bold mt-4 text-white">Healthy</p>
+              </div>
+              <div className="bg-[#121A2B] border border-slate-700 rounded-xl p-5">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Trivy</span>
                   <MdCheckCircle className="text-green-500 text-2xl" />
                 </div>
 
