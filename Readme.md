@@ -1,16 +1,20 @@
 # 🚀 DevSecOps Pipeline Dashboard
 
-A modern **Full Stack DevSecOps Dashboard** that provides centralized monitoring and management for your CI/CD pipeline. The application integrates **Jenkins**, **SonarQube**, **Grafana**, and **Server Metrics** into a single responsive dashboard with secure authentication.
+A modern Full Stack DevSecOps Dashboard that centralizes CI/CD pipeline management, code quality analysis, container security, infrastructure monitoring, and Kubernetes management into a single responsive web application.
 
----
+The dashboard integrates Jenkins, SonarQube, Trivy, Docker, Kubernetes, Grafana, and Prometheus to provide real-time visibility into the complete DevSecOps lifecycle while offering secure authentication through Clerk.
 
 ## ✨ Features
 
-- 🔐 Secure Authentication using Clerk
-- 📊 Modern DevSecOps Dashboard
+- 🔐 Secure Authentication with Clerk
+- 📊 Centralized DevSecOps Dashboard
 - ⚙️ Jenkins Pipeline Monitoring
-- 🛡️ SonarQube Code Quality Dashboard
-- 📈 Embedded Grafana Dashboard
+- 🛡️ SonarQube Code Quality & Security Analysis
+- 🐳 Docker Container Monitoring
+- ☸️ Kubernetes Cluster Monitoring
+- 🔍 Trivy Container Image Vulnerability Scanning
+- 📈 Embedded Grafana Dashboards
+- 📊 Prometheus Metrics Integration
 - 💻 Live Server Metrics
 - 👤 User Profile Management
 - 🌙 Modern Dark UI
@@ -43,6 +47,23 @@ A modern **Full Stack DevSecOps Dashboard** that provides centralized monitoring
 ![Jenkins](./output/jenkins.png.png)
 
 ---
+## 🐳 Docker Dashboard
+
+![Docker](./output/docker.png)
+
+---
+
+## ☸️ Kubernetes Dashboard
+
+![Kubernetes](./output/kubernetes.png)
+
+---
+
+## 🔍 Trivy Dashboard
+
+![Trivy](./output/trivy.png)
+
+---
 
 ## 📈 Grafana Dashboard
 
@@ -66,7 +87,7 @@ A modern **Full Stack DevSecOps Dashboard** that provides centralized monitoring
 
 
 
-# 🚀 Tech Stack
+## 🚀 Tech Stack
 
 ### Frontend
 
@@ -74,8 +95,8 @@ A modern **Full Stack DevSecOps Dashboard** that provides centralized monitoring
 - Tailwind CSS
 - React Router
 - Axios
-- React Icons
 - Recharts
+- React Icons
 - Clerk Authentication
 
 ### Backend
@@ -84,16 +105,19 @@ A modern **Full Stack DevSecOps Dashboard** that provides centralized monitoring
 - Express.js
 - REST APIs
 
-### DevOps Tools
+### DevSecOps
 
 - Jenkins
 - SonarQube
+- Trivy
+- Docker
+- Kubernetes
 - Grafana
-<!-- - Docker
-- Kubernetes -->
-- Prometheus
 
----
+### Tools
+
+- Git
+- GitHub
 
 # 📂 Project Structure
 
@@ -254,6 +278,39 @@ http://localhost:5173
 
 ---
 
+## 🐳 Docker
+
+- Docker Engine Status
+- Running Containers
+- Container Health
+- Images
+- Container Statistics
+- Open Docker Dashboard
+
+---
+
+## ☸️ Kubernetes
+
+- Cluster Information
+- Nodes
+- Pods
+- Deployments
+- Services
+- Namespaces
+- Open Kubernetes Dashboard
+
+---
+
+## 🔍 Trivy
+
+- Container Image Scan
+- Vulnerability Summary
+- Critical Issues
+- High Issues
+- Medium Issues
+- Low Issues
+- Scan History
+
 ## 📈 Grafana
 
 - Embedded Dashboard
@@ -312,7 +369,30 @@ GET /api/v1/sonarqube/dashboard/:projectKey
 GET /api/v1/grafana/dashboard/:uid
 ```
 
+
 ---
+## Docker
+```
+GET /api/v1/docker/info
+GET /api/v1/docker/containers
+GET /api/v1/docker/images
+```
+---
+
+## Kubernetes
+```
+GET /api/v1/kubernetes/cluster
+GET /api/v1/kubernetes/nodes
+GET /api/v1/kubernetes/pods
+GET /api/v1/kubernetes/deployments
+GET /api/v1/kubernetes/services
+```
+---
+
+## Trivy
+```
+GET /api/v1/trivy/scan/:image
+```
 
 ## Metrics
 
@@ -325,14 +405,15 @@ GET /api/v1/dashboard
 
 # 🌟 Future Enhancements
 
-- Kubernetes Dashboard
-- Docker Container Monitoring
-- Prometheus Alerts
-- Trivy Security Scan
-- OWASP ZAP Reports
-- Role Based Access Control
-- Email Notifications
+- OWASP ZAP Integration
+- Azure AKS Deployment
+- Role-Based Access Control (RBAC)
+- Email & Slack Notifications
 - Pipeline Trigger from Dashboard
+- Build Analytics & Trends
+- Multi-Cluster Kubernetes Support
+- Historical Vulnerability Reports
+- AI-powered Security Recommendations
 
 ---
 
